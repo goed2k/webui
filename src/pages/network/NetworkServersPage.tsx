@@ -43,8 +43,15 @@ export function NetworkServersPage() {
   const [metForm] = Form.useForm<{ sources: string }>();
 
   const columns = [
-    { title: t("pages.networkServers.colIdentifier"), dataIndex: "identifier", ellipsis: true },
-    { title: t("pages.networkServers.colAddress"), dataIndex: "address", ellipsis: true },
+    { title: t("pages.networkServers.colIdentifier"), dataIndex: "identifier", ellipsis: true, width: 120 },
+    { title: t("pages.networkServers.colName"), dataIndex: "name", ellipsis: true, width: 140 },
+    {
+      title: t("pages.networkServers.colDescription"),
+      dataIndex: "description",
+      ellipsis: true,
+      width: 160,
+    },
+    { title: t("pages.networkServers.colAddress"), dataIndex: "address", ellipsis: true, width: 140 },
     {
       title: t("pages.networkServers.colConfigured"),
       dataIndex: "configured",
@@ -80,10 +87,63 @@ export function NetworkServersPage() {
     {
       title: t("pages.networkServers.colRates"),
       key: "ru",
+      width: 120,
       render: (_: unknown, r: ServerDTO) =>
         `${formatSpeed(r.download_rate)} / ${formatSpeed(r.upload_rate)}`,
     },
-    { title: t("pages.networkServers.colLastRecv"), dataIndex: "milliseconds_since_last_receive", width: 140 },
+    {
+      title: t("pages.networkServers.colStatusUsersFiles"),
+      key: "st",
+      width: 120,
+      render: (_: unknown, r: ServerDTO) => {
+        const u = r.status_users;
+        const f = r.status_files;
+        if (u === undefined && f === undefined) return "—";
+        return `${u ?? "—"} / ${f ?? "—"}`;
+      },
+    },
+    {
+      title: t("pages.networkServers.colUdpUsersFiles"),
+      key: "ud",
+      width: 120,
+      render: (_: unknown, r: ServerDTO) => {
+        if (!r.udp_stats_valid) return "—";
+        return `${r.udp_users ?? "—"} / ${r.udp_files ?? "—"}`;
+      },
+    },
+    {
+      title: t("pages.networkServers.colMaxUsers"),
+      dataIndex: "max_users",
+      width: 88,
+      render: (v: number | undefined, r: ServerDTO) => (r.udp_stats_valid && v !== undefined ? v : "—"),
+    },
+    {
+      title: t("pages.networkServers.colSoftFiles"),
+      key: "sf",
+      width: 100,
+      render: (_: unknown, r: ServerDTO) =>
+        r.udp_stats_valid ? String(r.soft_files_limit ?? "—") : "—",
+    },
+    {
+      title: t("pages.networkServers.colHardFiles"),
+      dataIndex: "hard_files_limit",
+      width: 88,
+      render: (v: number | undefined, r: ServerDTO) => (r.udp_stats_valid && v !== undefined ? v : "—"),
+    },
+    {
+      title: t("pages.networkServers.colObfuscation"),
+      key: "obf",
+      width: 90,
+      render: (_: unknown, r: ServerDTO) =>
+        (r.obfuscation_tcp_port ?? 0) > 0 ? t("common.yes") : t("common.no"),
+    },
+    {
+      title: t("pages.networkServers.colTcpFlags"),
+      dataIndex: "tcp_flags",
+      width: 88,
+      render: (v: number | undefined) => (v !== undefined ? `0x${(v >>> 0).toString(16)}` : "—"),
+    },
+    { title: t("pages.networkServers.colLastRecv"), dataIndex: "milliseconds_since_last_receive", width: 120 },
   ];
 
   return (
@@ -174,7 +234,7 @@ export function NetworkServersPage() {
           loading={q.isLoading}
           dataSource={q.data ?? []}
           columns={columns}
-          scroll={{ x: 1600 }}
+          scroll={{ x: 2200 }}
           pagination={{ pageSize: 15 }}
         />
       </Card>

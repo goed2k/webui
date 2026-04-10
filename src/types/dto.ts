@@ -128,6 +128,8 @@ export interface SearchDTO {
 export interface ServerDTO {
   identifier: string;
   address: string;
+  name?: string;
+  description?: string;
   configured: boolean;
   connected: boolean;
   handshake_completed: boolean;
@@ -135,6 +137,17 @@ export interface ServerDTO {
   disconnecting: boolean;
   client_id: number;
   id_class: string;
+  tcp_flags?: number;
+  reported_ip?: number;
+  obfuscation_tcp_port?: number;
+  status_users?: number;
+  status_files?: number;
+  udp_users?: number;
+  udp_files?: number;
+  max_users?: number;
+  soft_files_limit?: number;
+  hard_files_limit?: number;
+  udp_stats_valid?: boolean;
   download_rate: number;
   upload_rate: number;
   milliseconds_since_last_receive: number;
