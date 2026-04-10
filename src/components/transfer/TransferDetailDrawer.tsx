@@ -8,6 +8,11 @@ import type { PeerDTO, PieceDTO } from "@/types/dto";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
 
+function u32Hex(n: number | undefined): string {
+  if (n === undefined || n === null) return "—";
+  return `0x${(n >>> 0).toString(16)}`;
+}
+
 interface TransferDetailDrawerProps {
   hash: string | null;
   open: boolean;
@@ -38,17 +43,102 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
 
   const peerCols: ColumnsType<PeerDTO> = useMemo(
     () => [
-      { title: "Endpoint", dataIndex: "endpoint", key: "endpoint", ellipsis: true },
-      { title: "Source", dataIndex: "source", key: "source" },
+      {
+        title: t("pages.transfers.peerColNick"),
+        dataIndex: "nick_name",
+        key: "nick_name",
+        ellipsis: true,
+        width: 120,
+      },
+      {
+        title: t("pages.transfers.peerColUserHash"),
+        dataIndex: "user_hash",
+        key: "user_hash",
+        width: 160,
+        render: (v: string | undefined) =>
+          v ? (
+            <Typography.Text copyable ellipsis style={{ maxWidth: 148 }}>
+              {v}
+            </Typography.Text>
+          ) : (
+            "—"
+          ),
+      },
+      {
+        title: t("pages.transfers.peerColClient"),
+        key: "client",
+        width: 140,
+        ellipsis: true,
+        render: (_, r) => {
+          const mod = r.mod_name?.trim();
+          const verStr = r.str_mod_version?.trim();
+          if (!mod && !verStr) return "—";
+          return [mod, verStr].filter(Boolean).join(" · ");
+        },
+      },
+      {
+        title: t("pages.transfers.peerColVersion"),
+        dataIndex: "version",
+        key: "version",
+        width: 72,
+        render: (v: number | undefined) => (v !== undefined && v !== null ? String(v) : "—"),
+      },
+      {
+        title: t("pages.transfers.peerColConnected"),
+        dataIndex: "connected",
+        key: "connected",
+        width: 72,
+        render: (v: boolean | undefined) =>
+          v === true ? t("common.yes") : v === false ? t("common.no") : "—",
+      },
+      {
+        title: t("pages.transfers.peerColCredits"),
+        key: "credits",
+        width: 160,
+        render: (_, r) => {
+          const up = r.total_uploaded ?? 0;
+          const down = r.total_downloaded ?? 0;
+          if (!up && !down) return "—";
+          return `${formatBytes(up)} ↑ / ${formatBytes(down)} ↓`;
+        },
+      },
+      { title: "Endpoint", dataIndex: "endpoint", key: "endpoint", ellipsis: true, width: 140 },
+      { title: "Source", dataIndex: "source", key: "source", width: 100, ellipsis: true },
       {
         title: t("pages.transfers.peerColDl"),
         key: "dr",
-        render: (_, r) => formatSpeed((r.download_rate as number) ?? 0),
+        width: 88,
+        render: (_, r) => formatSpeed(r.download_speed ?? 0),
+      },
+      {
+        title: t("pages.transfers.peerColPayloadDl"),
+        key: "pdr",
+        width: 96,
+        render: (_, r) => formatSpeed(r.payload_download_speed ?? 0),
       },
       {
         title: t("pages.transfers.peerColUl"),
         key: "ur",
-        render: (_, r) => formatSpeed((r.upload_rate as number) ?? 0),
+        width: 88,
+        render: (_, r) => formatSpeed(r.upload_speed ?? 0),
+      },
+      {
+        title: t("pages.transfers.peerColPayloadUl"),
+        key: "pur",
+        width: 96,
+        render: (_, r) => formatSpeed(r.payload_upload_speed ?? 0),
+      },
+      {
+        title: t("pages.transfers.peerColHelloMisc"),
+        key: "hello_misc",
+        width: 200,
+        render: (_, r) => `${u32Hex(r.hello_misc1)} / ${u32Hex(r.hello_misc2)}`,
+      },
+      {
+        title: t("pages.transfers.peerColFail"),
+        dataIndex: "fail_count",
+        key: "fail_count",
+        width: 72,
       },
     ],
     [t],
@@ -121,6 +211,7 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
                     columns={peerCols}
                     dataSource={peersQuery.data ?? []}
                     pagination={false}
+                    scroll={{ x: 1800 }}
                   />
                 </Space>
               ),

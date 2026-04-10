@@ -272,7 +272,26 @@ export async function mockRequest<T>(
   const peersRe = /^\/transfers\/([^/]+)\/peers$/.exec(path);
   if (peersRe && method === "GET") {
     return ok([
-      { endpoint: "1.2.3.4:5678", source: "server", download_rate: 100, upload_rate: 50 },
+      {
+        endpoint: "1.2.3.4:5678",
+        user_hash: "a".repeat(32),
+        nick_name: "mock-peer",
+        connected: true,
+        total_uploaded: 1024,
+        total_downloaded: 2048,
+        download_speed: 102400,
+        payload_download_speed: 100000,
+        upload_speed: 51200,
+        payload_upload_speed: 50000,
+        source: "server",
+        mod_name: "eMule",
+        version: 0x3c,
+        mod_version: 0,
+        str_mod_version: "0.50.0",
+        hello_misc1: 0x00fa00f9,
+        hello_misc2: 0x100,
+        fail_count: 0,
+      },
     ]) as ApiResponse<T>;
   }
 

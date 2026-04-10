@@ -182,7 +182,17 @@
       "labelEta": "ETA",
       "labelCreated": "创建时间",
       "peerColDl": "下载",
-      "peerColUl": "上传"
+      "peerColUl": "上传",
+      "peerColPayloadDl": "有效下载",
+      "peerColPayloadUl": "有效上传",
+      "peerColNick": "昵称",
+      "peerColUserHash": "用户 Hash",
+      "peerColClient": "客户端",
+      "peerColVersion": "版本号",
+      "peerColConnected": "已连接",
+      "peerColCredits": "累计上/下传",
+      "peerColHelloMisc": "Hello Misc",
+      "peerColFail": "失败次数"
     },
     "search": {
       "cardTitle": "搜索",

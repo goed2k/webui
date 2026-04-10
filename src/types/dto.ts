@@ -56,10 +56,23 @@ export interface TransferDetailDTO extends TransferDTO {
 
 export interface PeerDTO {
   endpoint?: string;
+  user_hash?: string;
+  nick_name?: string;
+  connected?: boolean;
+  total_uploaded?: number;
+  total_downloaded?: number;
+  download_speed?: number;
+  payload_download_speed?: number;
+  upload_speed?: number;
+  payload_upload_speed?: number;
   source?: string;
-  download_rate?: number;
-  upload_rate?: number;
-  [key: string]: unknown;
+  mod_name?: string;
+  version?: number;
+  mod_version?: number;
+  str_mod_version?: string;
+  hello_misc1?: number;
+  hello_misc2?: number;
+  fail_count?: number;
 }
 
 export interface PieceDTO {

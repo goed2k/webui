@@ -182,7 +182,17 @@
       "labelEta": "ETA",
       "labelCreated": "Created",
       "peerColDl": "Download",
-      "peerColUl": "Upload"
+      "peerColUl": "Upload",
+      "peerColPayloadDl": "Payload DL",
+      "peerColPayloadUl": "Payload UL",
+      "peerColNick": "Nick",
+      "peerColUserHash": "User hash",
+      "peerColClient": "Client",
+      "peerColVersion": "Ver",
+      "peerColConnected": "Connected",
+      "peerColCredits": "Credits ↑/↓",
+      "peerColHelloMisc": "Hello misc",
+      "peerColFail": "Fails"
     },
     "search": {
       "cardTitle": "Search",
