@@ -244,7 +244,8 @@ export interface WsEventEnvelope<T = unknown> {
 export interface ClientStatusData {
   status?: {
     engine_running?: boolean;
-    servers?: { connected?: number; total?: number };
+    /** 后端为 ServerDTO[]；旧版摘要形态保留兼容 */
+    servers?: ServerDTO[] | { connected?: number; total?: number };
     transfers?: { count?: number; download_rate?: number; upload_rate?: number };
     peers?: ClientPeerEntryDTO[];
     dht?: DHTStatusDTO;

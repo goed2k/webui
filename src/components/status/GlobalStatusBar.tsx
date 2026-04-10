@@ -1,9 +1,23 @@
 import type { KADV6StatusDTO } from "@/types/dto";
 import { useWsStore } from "@/store/wsStore";
 import { formatSpeed } from "@/utils/format";
+import type { ServerDTO } from "@/types/dto";
 import { Space, Tag } from "antd";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+/** 从 client.status.servers 解析已连接服务器数量（API 为 ServerDTO[]）。 */
+function connectedServerCount(servers: unknown): number | undefined {
+  if (servers == null) return undefined;
+  if (Array.isArray(servers)) {
+    return servers.filter((s) => (s as ServerDTO)?.connected).length;
+  }
+  if (typeof servers === "object" && servers !== null && "connected" in servers) {
+    const c = (servers as { connected?: number }).connected;
+    if (typeof c === "number") return c;
+  }
+  return undefined;
+}
 
 function wsColor(
   c: "idle" | "connecting" | "open" | "closed" | "error",
@@ -44,7 +58,8 @@ export function GlobalStatusBar(props: {
   const ul = props.uploadRate ?? totals?.upload_rate ?? 0;
   const engine =
     props.engineRunning ?? (clientStatus?.engine_running as boolean | undefined);
-  const servers = props.serverConnected ?? (clientStatus?.servers as { connected?: number } | undefined)?.connected;
+  const servers =
+    props.serverConnected ?? connectedServerCount(clientStatus?.servers);
   const dht = clientStatus?.dht as { enabled?: boolean; running?: boolean; nodes?: number } | undefined;
   const dhtV6 = clientStatus?.dht_v6 as KADV6StatusDTO | undefined;
 
