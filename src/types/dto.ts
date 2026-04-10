@@ -75,6 +75,14 @@ export interface PeerDTO {
   fail_count?: number;
 }
 
+/** 网络页：全局已知客户端（带所属任务） */
+export interface ClientPeerEntryDTO {
+  transfer_hash: string;
+  file_name: string;
+  file_path: string;
+  peer: PeerDTO;
+}
+
 export interface PieceDTO {
   index: number;
   state: string;
@@ -183,6 +191,7 @@ export interface ClientStatusData {
     engine_running?: boolean;
     servers?: { connected?: number; total?: number };
     transfers?: { count?: number; download_rate?: number; upload_rate?: number };
+    peers?: ClientPeerEntryDTO[];
     dht?: DHTStatusDTO;
     totals?: { download_rate?: number; upload_rate?: number };
     [key: string]: unknown;

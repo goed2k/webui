@@ -7,6 +7,7 @@ export const queryKeys = {
   transferPeers: (hash: string) => ["transfers", hash, "peers"] as const,
   transferPieces: (hash: string) => ["transfers", hash, "pieces"] as const,
   servers: ["network", "servers"] as const,
+  networkPeers: ["network", "peers"] as const,
   dht: ["network", "dht"] as const,
   searchCurrent: ["searches", "current"] as const,
   sharedFiles: ["shared", "files"] as const,

@@ -199,6 +199,29 @@ export async function mockRequest<T>(
     return ok({ ok: true }) as ApiResponse<T>;
   }
 
+  if (path === "/network/peers" && method === "GET") {
+    return ok([
+      {
+        transfer_hash: "a".repeat(32),
+        file_name: "mock.bin",
+        file_path: "./data/mock.bin",
+        peer: {
+          endpoint: "1.2.3.4:5678",
+          user_hash: "b".repeat(32),
+          nick_name: "mock-client",
+          connected: true,
+          download_speed: 102400,
+          upload_speed: 51200,
+          source: "server|kad",
+          mod_name: "eMule",
+          str_mod_version: "0.50a",
+          hello_misc1: 0x00fa00f9,
+          hello_misc2: 0x100,
+        },
+      },
+    ]) as ApiResponse<T>;
+  }
+
   if (path === "/network/dht" && method === "GET") {
     const data: DHTStatusDTO = { enabled: true, running: true, nodes: 42 };
     return ok(data) as ApiResponse<T>;

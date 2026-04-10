@@ -7,6 +7,7 @@ export const PAGE_TITLE_KEYS: Partial<Record<string, string>> = {
   [ROUTES.search]: "pages.titles.search",
   [ROUTES.shared]: "pages.titles.shared",
   [ROUTES.networkServers]: "pages.titles.networkServers",
+  [ROUTES.networkPeers]: "pages.titles.networkPeers",
   [ROUTES.networkDht]: "pages.titles.networkDht",
   [ROUTES.settingsRuntime]: "pages.titles.settingsRuntime",
   [ROUTES.settingsBootstrap]: "pages.titles.settingsBootstrap",

@@ -89,6 +89,10 @@ export function AppLayout() {
             label: <Link to={ROUTES.networkServers}>{t("layout.menu.networkServers")}</Link>,
           },
           {
+            key: ROUTES.networkPeers,
+            label: <Link to={ROUTES.networkPeers}>{t("layout.menu.networkPeers")}</Link>,
+          },
+          {
             key: ROUTES.networkDht,
             label: <Link to={ROUTES.networkDht}>{t("layout.menu.networkDht")}</Link>,
           },

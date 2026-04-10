@@ -24,6 +24,7 @@
       "shared": "共享",
       "network": "网络",
       "networkServers": "服务器",
+      "networkPeers": "已知客户端",
       "networkDht": "DHT",
       "settings": "设置",
       "settingsRuntime": "运行控制",
@@ -92,6 +93,7 @@
       "search": "搜索",
       "shared": "共享",
       "networkServers": "网络 · 服务器",
+      "networkPeers": "网络 · 已知客户端",
       "networkDht": "网络 · DHT",
       "settingsRuntime": "设置 · 运行控制",
       "settingsBootstrap": "设置 · 引导配置",
@@ -289,6 +291,20 @@
       "msgConnect": "已请求连接",
       "msgBatch": "已请求批量连接",
       "msgMet": "已请求加载 server.met"
+    },
+    "networkPeers": {
+      "hint": "列出当前所有下载任务上已连接/曾出现的对端（ED2K 客户端），数据来自引擎状态；引擎未启动时无法加载。",
+      "listTitle": "已知客户端",
+      "colTransferHash": "任务 Hash",
+      "colFileName": "任务文件",
+      "colNick": "昵称",
+      "colEndpoint": "Endpoint",
+      "colClient": "客户端",
+      "colConnected": "已连接",
+      "colDl": "下载",
+      "colUl": "上传",
+      "colSource": "来源",
+      "colHelloMisc": "Hello Misc"
     },
     "networkDht": {
       "enable": "启用 DHT",

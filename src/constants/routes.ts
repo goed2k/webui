@@ -4,6 +4,7 @@ export const ROUTES = {
   search: "/search",
   shared: "/shared",
   networkServers: "/network/servers",
+  networkPeers: "/network/peers",
   networkDht: "/network/dht",
   settingsRuntime: "/settings/runtime",
   settingsBootstrap: "/settings/bootstrap",

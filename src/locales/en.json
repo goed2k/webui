@@ -24,6 +24,7 @@
       "shared": "Shared",
       "network": "Network",
       "networkServers": "Servers",
+      "networkPeers": "Known clients",
       "networkDht": "DHT",
       "settings": "Settings",
       "settingsRuntime": "Runtime",
@@ -92,6 +93,7 @@
       "search": "Search",
       "shared": "Shared",
       "networkServers": "Network · Servers",
+      "networkPeers": "Network · Known clients",
       "networkDht": "Network · DHT",
       "settingsRuntime": "Settings · Runtime",
       "settingsBootstrap": "Settings · Bootstrap",
@@ -289,6 +291,20 @@
       "msgConnect": "Connect requested",
       "msgBatch": "Batch connect requested",
       "msgMet": "Load server.met requested"
+    },
+    "networkPeers": {
+      "hint": "Peers on all active downloads (ED2K clients), from engine state. Requires a running engine.",
+      "listTitle": "Known clients",
+      "colTransferHash": "Transfer hash",
+      "colFileName": "File",
+      "colNick": "Nick",
+      "colEndpoint": "Endpoint",
+      "colClient": "Client",
+      "colConnected": "Connected",
+      "colDl": "Download",
+      "colUl": "Upload",
+      "colSource": "Source",
+      "colHelloMisc": "Hello misc"
     },
     "networkDht": {
       "enable": "Enable DHT",
