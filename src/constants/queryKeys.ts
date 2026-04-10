@@ -1,0 +1,14 @@
+export const queryKeys = {
+  health: ["system", "health"] as const,
+  info: ["system", "info"] as const,
+  config: ["system", "config"] as const,
+  transfers: (params?: Record<string, unknown>) => ["transfers", params ?? {}] as const,
+  transfer: (hash: string) => ["transfers", hash] as const,
+  transferPeers: (hash: string) => ["transfers", hash, "peers"] as const,
+  transferPieces: (hash: string) => ["transfers", hash, "pieces"] as const,
+  servers: ["network", "servers"] as const,
+  dht: ["network", "dht"] as const,
+  searchCurrent: ["searches", "current"] as const,
+  sharedFiles: ["shared", "files"] as const,
+  sharedDirs: ["shared", "dirs"] as const,
+};
