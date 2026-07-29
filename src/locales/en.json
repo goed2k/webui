@@ -72,6 +72,8 @@
       "CONFIG_INVALID": "Invalid configuration",
       "STATE_STORE_ERROR": "State store error",
       "SHARED_FILE_NOT_FOUND": "Shared file not found",
+      "FORBIDDEN": "Forbidden",
+      "INVALID_HASH": "Invalid transfer hash",
       "BAD_REQUEST": "Bad request",
       "NOT_FOUND": "Not found",
       "INTERNAL_ERROR": "Internal server error"

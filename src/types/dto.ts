@@ -46,6 +46,8 @@ export interface TransferDTO {
   active_peers: number;
   downloading_pieces: number;
   progress: number;
+  download_priority?: number;
+  download_priority_label?: string;
   ed2k_link: string;
 }
 
@@ -109,6 +111,7 @@ export interface SearchResultItemDTO {
   complete_sources?: number;
   file_type?: string;
   extension?: string;
+  note?: string;
   [key: string]: unknown;
 }
 
@@ -137,6 +140,7 @@ export interface ServerDTO {
   disconnecting: boolean;
   client_id: number;
   id_class: string;
+  aux_port?: number;
   tcp_flags?: number;
   reported_ip?: number;
   obfuscation_tcp_port?: number;
@@ -160,6 +164,15 @@ export interface DHTStatusDTO {
   [key: string]: unknown;
 }
 
+/** IPv6 KAD/DHT 状态（与 daemon KADV6StatusDTO 对齐） */
+export interface KADV6StatusDTO {
+  bootstrapped?: boolean;
+  live_nodes?: number;
+  listen_port?: number;
+  storage_point?: string;
+  [key: string]: unknown;
+}
+
 export interface SharedFileDTO {
   hash: string;
   file_size: number;
@@ -178,6 +191,8 @@ export interface SystemConfigDTO {
     server_met_urls: string[];
     nodes_dat_urls: string[];
     kad_nodes: string[];
+    nodes6_dat_urls?: string[];
+    kad_v6_nodes?: string[];
   };
   state?: {
     enabled: boolean;
@@ -206,6 +221,7 @@ export interface ClientStatusData {
     transfers?: { count?: number; download_rate?: number; upload_rate?: number };
     peers?: ClientPeerEntryDTO[];
     dht?: DHTStatusDTO;
+    dht_v6?: KADV6StatusDTO;
     totals?: { download_rate?: number; upload_rate?: number };
     [key: string]: unknown;
   };

@@ -72,6 +72,8 @@
       "CONFIG_INVALID": "配置无效",
       "STATE_STORE_ERROR": "状态存储错误",
       "SHARED_FILE_NOT_FOUND": "共享文件不存在",
+      "FORBIDDEN": "禁止访问",
+      "INVALID_HASH": "任务 Hash 格式无效",
       "BAD_REQUEST": "请求参数错误",
       "NOT_FOUND": "资源不存在",
       "INTERNAL_ERROR": "服务器内部错误"
