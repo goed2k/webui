@@ -26,6 +26,7 @@
       "networkServers": "Servers",
       "networkPeers": "Known clients",
       "networkDht": "DHT",
+      "networkDhtV6": "DHT v6",
       "settings": "Settings",
       "settingsRuntime": "Runtime",
       "settingsBootstrap": "Bootstrap",
@@ -51,7 +52,11 @@
     "dhtRunning": "running",
     "dhtStopped": "stopped",
     "dhtNodes": "{{count}} nodes",
-    "dhtEmpty": "DHT —"
+    "dhtEmpty": "DHT —",
+    "dhtV6Empty": "DHTv6 —",
+    "dhtV6Bootstrapped": "bootstrapped",
+    "dhtV6NotBootstrapped": "not bootstrapped",
+    "dhtV6Nodes": "{{count}} nodes"
   },
   "token": {
     "title": "Set access token",
@@ -97,6 +102,7 @@
       "networkServers": "Network · Servers",
       "networkPeers": "Network · Known clients",
       "networkDht": "Network · DHT",
+      "networkDhtV6": "Network · DHT v6",
       "settingsRuntime": "Settings · Runtime",
       "settingsBootstrap": "Settings · Bootstrap",
       "settingsState": "Settings · State",
@@ -333,6 +339,23 @@
       "msgEnable": "Enable DHT requested",
       "msgLoadNodes": "Import nodes requested",
       "msgBootstrap": "Bootstrap requested"
+    },
+    "networkDhtV6": {
+      "enable": "Enable DHT v6",
+      "showImportNodes": "Show import nodes6",
+      "hideImportNodes": "Hide import nodes6",
+      "showBootPanel": "Show bootstrap",
+      "hideBootPanel": "Hide bootstrap",
+      "hint": "IPv6 KAD/DHT management; stop API is not available — only enable, import, and bootstrap.",
+      "statusTitle": "DHT v6 status",
+      "importTitle": "Import nodes6.dat (URL or path)",
+      "warnNoSource": "Enter at least one source",
+      "bootTitle": "Bootstrap IPv6 nodes",
+      "warnNoNode": "Enter at least one [ip]:port",
+      "bootBtn": "Bootstrap",
+      "msgEnable": "Enable DHT v6 requested",
+      "msgLoadNodes": "Import IPv6 nodes requested",
+      "msgBootstrap": "IPv6 bootstrap requested"
     },
     "settingsRuntime": {
       "startEngine": "Start engine",

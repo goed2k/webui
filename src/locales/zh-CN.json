@@ -26,6 +26,7 @@
       "networkServers": "服务器",
       "networkPeers": "已知客户端",
       "networkDht": "DHT",
+      "networkDhtV6": "DHT v6",
       "settings": "设置",
       "settingsRuntime": "运行控制",
       "settingsBootstrap": "引导配置",
@@ -51,7 +52,11 @@
     "dhtRunning": "运行",
     "dhtStopped": "停止",
     "dhtNodes": "{{count}} 节点",
-    "dhtEmpty": "DHT —"
+    "dhtEmpty": "DHT —",
+    "dhtV6Empty": "DHTv6 —",
+    "dhtV6Bootstrapped": "已引导",
+    "dhtV6NotBootstrapped": "未引导",
+    "dhtV6Nodes": "{{count}} 节点"
   },
   "token": {
     "title": "设置访问 Token",
@@ -97,6 +102,7 @@
       "networkServers": "网络 · 服务器",
       "networkPeers": "网络 · 已知客户端",
       "networkDht": "网络 · DHT",
+      "networkDhtV6": "网络 · DHT v6",
       "settingsRuntime": "设置 · 运行控制",
       "settingsBootstrap": "设置 · 引导配置",
       "settingsState": "设置 · 状态持久化",
@@ -333,6 +339,23 @@
       "msgEnable": "已请求启用 DHT",
       "msgLoadNodes": "已请求导入节点文件",
       "msgBootstrap": "已请求 bootstrap"
+    },
+    "networkDhtV6": {
+      "enable": "启用 DHT v6",
+      "showImportNodes": "显示导入 nodes6",
+      "hideImportNodes": "隐藏导入 nodes6",
+      "showBootPanel": "显示 bootstrap",
+      "hideBootPanel": "隐藏 bootstrap",
+      "hint": "IPv6 KAD/DHT 管理；后端未提供停止接口，仅支持启用、导入与 bootstrap。",
+      "statusTitle": "DHT v6 状态",
+      "importTitle": "导入 nodes6.dat（URL 或本地路径）",
+      "warnNoSource": "请输入至少一个来源",
+      "bootTitle": "Bootstrap IPv6 节点",
+      "warnNoNode": "请输入至少一个 [ip]:port",
+      "bootBtn": "Bootstrap",
+      "msgEnable": "已请求启用 DHT v6",
+      "msgLoadNodes": "已请求导入 IPv6 节点文件",
+      "msgBootstrap": "已请求 IPv6 bootstrap"
     },
     "settingsRuntime": {
       "startEngine": "启动引擎",

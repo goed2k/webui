@@ -1,6 +1,7 @@
 import { AppLayout } from "@/components/layout/AppLayout";
 import { DashboardPage } from "@/pages/dashboard/DashboardPage";
 import { NetworkDhtPage } from "@/pages/network/NetworkDhtPage";
+import { NetworkDhtV6Page } from "@/pages/network/NetworkDhtV6Page";
 import { NetworkPeersPage } from "@/pages/network/NetworkPeersPage";
 import { NetworkServersPage } from "@/pages/network/NetworkServersPage";
 import { SearchPage } from "@/pages/search/SearchPage";
@@ -25,6 +26,7 @@ export const router = createBrowserRouter([
       { path: "network/servers", element: <NetworkServersPage /> },
       { path: "network/peers", element: <NetworkPeersPage /> },
       { path: "network/dht", element: <NetworkDhtPage /> },
+      { path: "network/dht-v6", element: <NetworkDhtV6Page /> },
       { path: "settings/runtime", element: <SettingsRuntimePage /> },
       { path: "settings/bootstrap", element: <SettingsBootstrapPage /> },
       { path: "settings/state", element: <SettingsStatePage /> },

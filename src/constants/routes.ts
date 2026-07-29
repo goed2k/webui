@@ -6,6 +6,7 @@ export const ROUTES = {
   networkServers: "/network/servers",
   networkPeers: "/network/peers",
   networkDht: "/network/dht",
+  networkDhtV6: "/network/dht-v6",
   settingsRuntime: "/settings/runtime",
   settingsBootstrap: "/settings/bootstrap",
   settingsState: "/settings/state",
