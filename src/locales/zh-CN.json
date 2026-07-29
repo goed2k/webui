@@ -390,7 +390,9 @@
       "phAddresses": "输入后回车添加 host:port",
       "phMet": "http://.../server.met",
       "phNodes": "https://.../nodes.dat",
-      "phKad": "ip:port"
+      "phKad": "ip:port",
+      "phNodes6": "https://.../nodes6.dat",
+      "phKadV6": "[2001:db8::1]:4672"
     },
     "settingsState": {
       "title": "状态持久化（state）",
