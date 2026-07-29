@@ -230,6 +230,14 @@ export function SearchPage() {
               render: (_, r) => `${r.file_type ?? ""} ${r.extension ?? ""}`.trim() || t("common.dash"),
             },
             {
+              title: t("pages.search.colNote"),
+              dataIndex: "note",
+              key: "note",
+              width: 140,
+              ellipsis: true,
+              render: (v: string | undefined) => v?.trim() || t("common.dash"),
+            },
+            {
               title: t("pages.search.colAction"),
               key: "op",
               width: 88,

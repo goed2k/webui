@@ -7,6 +7,7 @@
     "save": "Save",
     "submit": "Submit",
     "reload": "Reload",
+    "cancel": "Cancel",
     "loading": "Loading…",
     "loadFailed": "Failed to load",
     "show": "Show",
@@ -26,6 +27,7 @@
       "networkServers": "Servers",
       "networkPeers": "Known clients",
       "networkDht": "DHT",
+      "networkDhtV6": "DHT v6",
       "settings": "Settings",
       "settingsRuntime": "Runtime",
       "settingsBootstrap": "Bootstrap",
@@ -51,7 +53,11 @@
     "dhtRunning": "running",
     "dhtStopped": "stopped",
     "dhtNodes": "{{count}} nodes",
-    "dhtEmpty": "DHT —"
+    "dhtEmpty": "DHT —",
+    "dhtV6Empty": "DHTv6 —",
+    "dhtV6Bootstrapped": "bootstrapped",
+    "dhtV6NotBootstrapped": "not bootstrapped",
+    "dhtV6Nodes": "{{count}} nodes"
   },
   "token": {
     "title": "Set access token",
@@ -72,6 +78,8 @@
       "CONFIG_INVALID": "Invalid configuration",
       "STATE_STORE_ERROR": "State store error",
       "SHARED_FILE_NOT_FOUND": "Shared file not found",
+      "FORBIDDEN": "Forbidden",
+      "INVALID_HASH": "Invalid transfer hash",
       "BAD_REQUEST": "Bad request",
       "NOT_FOUND": "Not found",
       "INTERNAL_ERROR": "Internal server error"
@@ -84,6 +92,7 @@
     "missingEd2kLink": "Missing ed2k_link",
     "transferNotFound": "Transfer not found",
     "searchAlreadyRunning": "A search is already active",
+    "invalidPriority": "Invalid priority (must be 0-4)",
     "notImplemented": "Mock not implemented: {{method}} {{path}}"
   },
   "pages": {
@@ -95,6 +104,7 @@
       "networkServers": "Network · Servers",
       "networkPeers": "Network · Known clients",
       "networkDht": "Network · DHT",
+      "networkDhtV6": "Network · DHT v6",
       "settingsRuntime": "Settings · Runtime",
       "settingsBootstrap": "Settings · Bootstrap",
       "settingsState": "Settings · State",
@@ -148,6 +158,7 @@
       "colSize": "Size",
       "colProgress": "Progress",
       "colState": "State",
+      "colPriority": "Priority",
       "colPaused": "Paused",
       "colRates": "↓ / ↑",
       "colPeers": "Peers",
@@ -161,7 +172,11 @@
       "delete": "Delete",
       "detail": "Details",
       "confirmDelete": "Delete transfer \"{{name}}\"?",
+      "confirmDeleteHint": "Remove the task only, or also delete downloaded files on disk.",
+      "deleteTaskOnly": "Task only",
+      "deleteWithFiles": "Task and files",
       "msgCreated": "Transfer created",
+      "msgPriorityUpdated": "Download priority updated",
       "modalAddTitle": "Add transfer",
       "fieldEd2k": "ED2K link",
       "fieldTargetDir": "Target directory (optional)",
@@ -177,6 +192,7 @@
       "labelLocalPath": "Local path",
       "labelSize": "Size",
       "labelState": "State",
+      "labelPriority": "Download priority",
       "labelProgress": "Progress",
       "labelPaused": "Paused",
       "labelDlUl": "Download / upload",
@@ -224,6 +240,7 @@
       "colSources": "Sources",
       "colComplete": "Complete",
       "colTypeExt": "Type / ext",
+      "colNote": "Note",
       "colAction": "Action",
       "download": "Download",
       "msgStarted": "Search started",
@@ -288,6 +305,7 @@
       "colDisconnecting": "Disconnecting",
       "colClientId": "Client ID",
       "colIdClass": "ID class",
+      "colAuxPort": "Aux port",
       "colRates": "↓ / ↑",
       "colStatusUsersFiles": "Users/files (TCP)",
       "colUdpUsersFiles": "Users/files (UDP)",
@@ -332,6 +350,23 @@
       "msgLoadNodes": "Import nodes requested",
       "msgBootstrap": "Bootstrap requested"
     },
+    "networkDhtV6": {
+      "enable": "Enable DHT v6",
+      "showImportNodes": "Show import nodes6",
+      "hideImportNodes": "Hide import nodes6",
+      "showBootPanel": "Show bootstrap",
+      "hideBootPanel": "Hide bootstrap",
+      "hint": "IPv6 KAD/DHT management; stop API is not available — only enable, import, and bootstrap.",
+      "statusTitle": "DHT v6 status",
+      "importTitle": "Import nodes6.dat (URL or path)",
+      "warnNoSource": "Enter at least one source",
+      "bootTitle": "Bootstrap IPv6 nodes",
+      "warnNoNode": "Enter at least one [ip]:port",
+      "bootBtn": "Bootstrap",
+      "msgEnable": "Enable DHT v6 requested",
+      "msgLoadNodes": "Import IPv6 nodes requested",
+      "msgBootstrap": "IPv6 bootstrap requested"
+    },
     "settingsRuntime": {
       "startEngine": "Start engine",
       "stopEngine": "Stop engine",
@@ -362,7 +397,9 @@
       "phAddresses": "Type and press Enter — host:port",
       "phMet": "http://.../server.met",
       "phNodes": "https://.../nodes.dat",
-      "phKad": "ip:port"
+      "phKad": "ip:port",
+      "phNodes6": "https://.../nodes6.dat",
+      "phKadV6": "[2001:db8::1]:4672"
     },
     "settingsState": {
       "title": "State persistence",

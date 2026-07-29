@@ -9,6 +9,7 @@ export const queryKeys = {
   servers: ["network", "servers"] as const,
   networkPeers: ["network", "peers"] as const,
   dht: ["network", "dht"] as const,
+  dhtV6: ["network", "dht-v6"] as const,
   searchCurrent: ["searches", "current"] as const,
   sharedFiles: ["shared", "files"] as const,
   sharedDirs: ["shared", "dirs"] as const,

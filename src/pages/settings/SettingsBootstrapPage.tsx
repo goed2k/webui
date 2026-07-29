@@ -17,6 +17,8 @@ export function SettingsBootstrapPage() {
     server_met_urls: string[];
     nodes_dat_urls: string[];
     kad_nodes: string[];
+    nodes6_dat_urls: string[];
+    kad_v6_nodes: string[];
   }>();
 
   const update = useMutation({
@@ -40,6 +42,8 @@ export function SettingsBootstrapPage() {
           server_met_urls: boot?.server_met_urls ?? [],
           nodes_dat_urls: boot?.nodes_dat_urls ?? [],
           kad_nodes: boot?.kad_nodes ?? [],
+          nodes6_dat_urls: boot?.nodes6_dat_urls ?? [],
+          kad_v6_nodes: boot?.kad_v6_nodes ?? [],
         }}
         onFinish={(v) =>
           update.mutate({
@@ -48,6 +52,8 @@ export function SettingsBootstrapPage() {
               server_met_urls: v.server_met_urls ?? [],
               nodes_dat_urls: v.nodes_dat_urls ?? [],
               kad_nodes: v.kad_nodes ?? [],
+              nodes6_dat_urls: v.nodes6_dat_urls ?? [],
+              kad_v6_nodes: v.kad_v6_nodes ?? [],
             },
           })
         }
@@ -63,6 +69,12 @@ export function SettingsBootstrapPage() {
         </Form.Item>
         <Form.Item name="kad_nodes" label="kad_nodes">
           <Select mode="tags" placeholder={t("pages.settingsBootstrap.phKad")} tokenSeparators={[",", " "]} />
+        </Form.Item>
+        <Form.Item name="nodes6_dat_urls" label="nodes6_dat_urls">
+          <Select mode="tags" placeholder={t("pages.settingsBootstrap.phNodes6")} tokenSeparators={[",", " "]} />
+        </Form.Item>
+        <Form.Item name="kad_v6_nodes" label="kad_v6_nodes">
+          <Select mode="tags" placeholder={t("pages.settingsBootstrap.phKadV6")} tokenSeparators={[",", " "]} />
         </Form.Item>
         <Space>
           <Button type="primary" htmlType="submit" loading={update.isPending}>

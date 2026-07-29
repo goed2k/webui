@@ -1,5 +1,5 @@
 import { apiGet, apiPost } from "@/services/api/client";
-import type { ClientPeerEntryDTO, DHTStatusDTO, ServerDTO } from "@/types/dto";
+import type { ClientPeerEntryDTO, DHTStatusDTO, KADV6StatusDTO, ServerDTO } from "@/types/dto";
 
 export const networkApi = {
   servers: () => apiGet<ServerDTO[]>("/network/servers"),
@@ -15,4 +15,10 @@ export const networkApi = {
     apiPost<{ ok: boolean }>("/network/dht/load-nodes", { sources }),
   dhtBootstrap: (nodes: string[]) =>
     apiPost<{ ok: boolean }>("/network/dht/bootstrap-nodes", { nodes }),
+  dhtV6: () => apiGet<KADV6StatusDTO>("/network/dht-v6"),
+  dhtV6Enable: () => apiPost<{ ok: boolean }>("/network/dht-v6/enable"),
+  dhtV6LoadNodes: (sources: string[]) =>
+    apiPost<{ ok: boolean }>("/network/dht-v6/load-nodes", { sources }),
+  dhtV6Bootstrap: (nodes: string[]) =>
+    apiPost<{ ok: boolean }>("/network/dht-v6/bootstrap-nodes", { nodes }),
 };

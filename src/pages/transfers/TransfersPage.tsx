@@ -10,6 +10,8 @@ import { useCallback, useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useTranslation } from "react-i18next";
 
+import { TRANSFER_PRIORITY_OPTIONS, transferPriorityLabel } from "@/constants/transferPriority";
+
 export function TransfersPage() {
   const { t } = useTranslation();
   const qc = useQueryClient();
@@ -53,6 +55,18 @@ export function TransfersPage() {
     mutationFn: (h: string) => transfersApi.remove(h, false),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["transfers"] }),
   });
+  const deleteFilesM = useMutation({
+    mutationFn: (h: string) => transfersApi.remove(h, true),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["transfers"] }),
+  });
+  const priorityM = useMutation({
+    mutationFn: ({ hash, priority }: { hash: string; priority: number }) =>
+      transfersApi.setPriority(hash, priority),
+    onSuccess: () => {
+      message.success(t("pages.transfers.msgPriorityUpdated"));
+      void qc.invalidateQueries({ queryKey: ["transfers"] });
+    },
+  });
 
   const openDetail = useCallback(
     (h: string) => {
@@ -73,11 +87,34 @@ export function TransfersPage() {
     (h: string, name: string) => {
       Modal.confirm({
         title: t("pages.transfers.confirmDelete", { name }),
-        okType: "danger",
-        onOk: () => deleteM.mutateAsync(h),
+        content: t("pages.transfers.confirmDeleteHint"),
+        footer: (_, { CancelBtn }) => (
+          <>
+            <CancelBtn />
+            <Button
+              danger
+              onClick={() => {
+                Modal.destroyAll();
+                deleteM.mutate(h);
+              }}
+            >
+              {t("pages.transfers.deleteTaskOnly")}
+            </Button>
+            <Button
+              danger
+              type="primary"
+              onClick={() => {
+                Modal.destroyAll();
+                deleteFilesM.mutate(h);
+              }}
+            >
+              {t("pages.transfers.deleteWithFiles")}
+            </Button>
+          </>
+        ),
       });
     },
-    [t, deleteM],
+    [t, deleteM, deleteFilesM],
   );
 
   const columns: ColumnsType<TransferDTO> = useMemo(
@@ -107,6 +144,12 @@ export function TransfersPage() {
         render: (p: number) => formatPercent(p),
       },
       { title: t("pages.transfers.colState"), dataIndex: "state", width: 102 },
+      {
+        title: t("pages.transfers.colPriority"),
+        key: "priority",
+        width: 100,
+        render: (_, r) => transferPriorityLabel(r.download_priority, r.download_priority_label),
+      },
       {
         title: t("pages.transfers.colPaused"),
         dataIndex: "paused",
@@ -149,9 +192,22 @@ export function TransfersPage() {
         title: t("pages.transfers.colActions"),
         key: "actions",
         fixed: "right",
-        width: 220,
+        width: 280,
         render: (_, r) => (
           <Space wrap size="small">
+            <Select
+              size="small"
+              style={{ width: 72 }}
+              value={
+                priorityM.isPending && priorityM.variables?.hash === r.hash
+                  ? priorityM.variables.priority
+                  : r.download_priority
+              }
+              placeholder="—"
+              options={TRANSFER_PRIORITY_OPTIONS}
+              onChange={(v) => priorityM.mutate({ hash: r.hash, priority: v })}
+              disabled={priorityM.isPending && priorityM.variables?.hash === r.hash}
+            />
             <Button size="small" disabled={r.paused} onClick={() => pauseM.mutate(r.hash)}>
               {t("pages.transfers.pause")}
             </Button>
@@ -168,7 +224,7 @@ export function TransfersPage() {
         ),
       },
     ],
-    [t, pauseM, resumeM, confirmDelete, openDetail],
+    [t, pauseM, resumeM, priorityM, confirmDelete, openDetail],
   );
 
   const [addOpen, setAddOpen] = useState(false);
@@ -229,7 +285,7 @@ export function TransfersPage() {
         rowKey={(r) => r.hash}
         loading={listQuery.isLoading}
         tableLayout="fixed"
-        scroll={{ x: 1750 }}
+        scroll={{ x: 1830 }}
         dataSource={data}
         columns={columns}
         pagination={{ pageSize: 20, showSizeChanger: true }}

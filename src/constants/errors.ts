@@ -12,6 +12,8 @@ export const KNOWN_ERROR_CODES = [
   "CONFIG_INVALID",
   "STATE_STORE_ERROR",
   "SHARED_FILE_NOT_FOUND",
+  "FORBIDDEN",
+  "INVALID_HASH",
 ] as const;
 
 export function errorCodeLabel(code: string): string {

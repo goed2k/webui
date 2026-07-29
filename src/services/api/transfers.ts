@@ -30,6 +30,8 @@ export const transfersApi = {
   }) => apiPost<TransferDTO>("/transfers", body),
   pause: (hash: string) => apiPost<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}/pause`),
   resume: (hash: string) => apiPost<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}/resume`),
+  setPriority: (hash: string, priority: number) =>
+    apiPost<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}/priority`, { priority }),
   remove: (hash: string, deleteFiles?: boolean) => {
     const q = deleteFiles ? "?delete_files=true" : "";
     return apiDelete<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}${q}`);

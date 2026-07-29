@@ -1,3 +1,4 @@
+import type { KADV6StatusDTO } from "@/types/dto";
 import { useWsStore } from "@/store/wsStore";
 import { formatSpeed } from "@/utils/format";
 import { Space, Tag } from "antd";
@@ -45,6 +46,7 @@ export function GlobalStatusBar(props: {
     props.engineRunning ?? (clientStatus?.engine_running as boolean | undefined);
   const servers = props.serverConnected ?? (clientStatus?.servers as { connected?: number } | undefined)?.connected;
   const dht = clientStatus?.dht as { enabled?: boolean; running?: boolean; nodes?: number } | undefined;
+  const dhtV6 = clientStatus?.dht_v6 as KADV6StatusDTO | undefined;
 
   const dhtText = useMemo(() => {
     if (props.dhtSummary) return props.dhtSummary;
@@ -55,6 +57,15 @@ export function GlobalStatusBar(props: {
     }
     return `DHT ${run}`;
   }, [props.dhtSummary, dht, t]);
+
+  const dhtV6Text = useMemo(() => {
+    if (!dhtV6) return t("statusBar.dhtV6Empty");
+    const run = dhtV6.bootstrapped ? t("statusBar.dhtV6Bootstrapped") : t("statusBar.dhtV6NotBootstrapped");
+    if (dhtV6.live_nodes != null) {
+      return `DHTv6 ${run} · ${t("statusBar.dhtV6Nodes", { count: dhtV6.live_nodes })}`;
+    }
+    return `DHTv6 ${run}`;
+  }, [dhtV6, t]);
 
   return (
     <Space size={[8, 8]} wrap>
@@ -67,6 +78,7 @@ export function GlobalStatusBar(props: {
       </Tag>
       <Tag>{t("statusBar.servers", { count: servers ?? t("common.dash") })}</Tag>
       <Tag>{dhtText}</Tag>
+      <Tag>{dhtV6Text}</Tag>
       <Tag color="blue">↓ {formatSpeed(dl)}</Tag>
       <Tag color="cyan">↑ {formatSpeed(ul)}</Tag>
     </Space>

@@ -1,12 +1,14 @@
 import { transfersApi } from "@/services/api/transfers";
 import { queryKeys } from "@/constants/queryKeys";
 import { formatBytes, formatEta, formatPercent, formatSpeed, formatTimestamp } from "@/utils/format";
-import { useQuery } from "@tanstack/react-query";
-import { Descriptions, Drawer, Space, Table, Tabs, Typography } from "antd";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { Descriptions, Drawer, Select, Space, Table, Tabs, Typography, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { PeerDTO, PieceDTO } from "@/types/dto";
 import { useMemo } from "react";
 import { useTranslation } from "react-i18next";
+
+import { TRANSFER_PRIORITY_OPTIONS } from "@/constants/transferPriority";
 
 function u32Hex(n: number | undefined): string {
   if (n === undefined || n === null) return "—";
@@ -21,6 +23,7 @@ interface TransferDetailDrawerProps {
 
 export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDrawerProps) {
   const { t } = useTranslation();
+  const qc = useQueryClient();
   const detailQuery = useQuery({
     queryKey: hash ? queryKeys.transfer(hash) : ["transfers", "none"],
     queryFn: () => transfersApi.get(hash!),
@@ -40,6 +43,15 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
   });
 
   const d = detailQuery.data;
+
+  const priorityM = useMutation({
+    mutationFn: (priority: number) => transfersApi.setPriority(hash!, priority),
+    onSuccess: () => {
+      message.success(t("pages.transfers.msgPriorityUpdated"));
+      void qc.invalidateQueries({ queryKey: ["transfers"] });
+      if (hash) void qc.invalidateQueries({ queryKey: queryKeys.transfer(hash) });
+    },
+  });
 
   const peerCols: ColumnsType<PeerDTO> = useMemo(
     () => [
@@ -184,6 +196,19 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
                   <Descriptions.Item label={t("pages.transfers.labelLocalPath")}>{d.file_path || t("common.dash")}</Descriptions.Item>
                   <Descriptions.Item label={t("pages.transfers.colSize")}>{formatBytes(d.size)}</Descriptions.Item>
                   <Descriptions.Item label={t("pages.transfers.colState")}>{d.state}</Descriptions.Item>
+                  <Descriptions.Item label={t("pages.transfers.labelPriority")}>
+                    <Select
+                      size="small"
+                      style={{ width: 88 }}
+                      value={
+                        priorityM.isPending ? priorityM.variables : d.download_priority
+                      }
+                      placeholder="—"
+                      options={TRANSFER_PRIORITY_OPTIONS}
+                      onChange={(v) => priorityM.mutate(v)}
+                      disabled={priorityM.isPending}
+                    />
+                  </Descriptions.Item>
                   <Descriptions.Item label={t("pages.transfers.colProgress")}>{formatPercent(d.progress)}</Descriptions.Item>
                   <Descriptions.Item label={t("pages.transfers.colPaused")}>
                     {d.paused ? t("common.yes") : t("common.no")}

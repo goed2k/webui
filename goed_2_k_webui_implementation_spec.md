@@ -145,7 +145,9 @@ WebUI 的主要职责：
 #### 网络
 
 - 服务器
+- 已知客户端
 - DHT
+- DHT v6
 
 #### 设置
 
@@ -156,8 +158,8 @@ WebUI 的主要职责：
 
 说明：
 
-- 不再保留“统计”“日志”“Peers”“连接”独立一级或二级页面
-- Peer 信息仅在任务详情中展示
+- 不再保留“统计”“日志”“连接”独立一级或二级页面
+- Peer 信息在任务详情与「已知客户端」页展示
 - 设置项仅围绕后端 `system/config` 当前支持的字段设计
 
 ---
@@ -173,7 +175,9 @@ WebUI 的主要职责：
 /search
 /shared
 /network/servers
+/network/peers
 /network/dht
+/network/dht-v6
 /settings/runtime
 /settings/bootstrap
 /settings/state
@@ -244,6 +248,11 @@ WebUI 的主要职责：
 - `SEARCH_ALREADY_RUNNING`
 - `SEARCH_NOT_RUNNING`
 - `CONFIG_INVALID`
+- `INVALID_HASH`
+- `FORBIDDEN`
+- `BAD_REQUEST`
+- `NOT_FOUND`
+- `INTERNAL_ERROR`
 - `STATE_STORE_ERROR`
 - `SHARED_FILE_NOT_FOUND`
 
@@ -309,7 +318,8 @@ WebUI 的主要职责：
 - `GET /api/v1/transfers/{hash}`
 - `POST /api/v1/transfers/{hash}/pause`
 - `POST /api/v1/transfers/{hash}/resume`
-- `DELETE /api/v1/transfers/{hash}`
+- `POST /api/v1/transfers/{hash}/priority`
+- `DELETE /api/v1/transfers/{hash}`（可选 `delete_files`）
 - `GET /api/v1/transfers/{hash}/peers`
 - `GET /api/v1/transfers/{hash}/pieces`
 - `GET /api/v1/events/ws`
@@ -334,6 +344,7 @@ WebUI 的主要职责：
 - 大小
 - 进度
 - 状态
+- 下载优先级（`download_priority_label`）
 - 是否暂停
 - 下载速度
 - 上传速度
@@ -349,7 +360,8 @@ WebUI 的主要职责：
 
 - 暂停
 - 恢复
-- 删除
+- 设置优先级（`POST /transfers/{hash}/priority`）
+- 删除（可选 `delete_files` 同时删本地文件）
 - 查看详情
 
 ### 任务详情抽屉 Tabs
@@ -441,6 +453,7 @@ WebUI 的主要职责：
 - 来源数
 - 完整源数
 - 文件类型或扩展名
+- 备注 `note`（若后端返回）
 - 操作
 
 ### 行操作
@@ -510,38 +523,20 @@ WebUI 的主要职责：
 数据主要来自：
 
 - `GET /api/v1/network/servers`
+- `GET /api/v1/network/peers`
 - `POST /api/v1/network/servers/connect`
 - `POST /api/v1/network/servers/connect-batch`
 - `POST /api/v1/network/servers/load-met`
 
-#### 列表字段
+### 9.5.2 已知客户端页
 
-- identifier
-- address
-- configured
-- connected
-- handshake_completed
-- primary
-- disconnecting
-- client_id
-- id_class
-- download_rate
-- upload_rate
-- milliseconds_since_last_receive
+数据主要来自：
 
-#### 操作
+- `GET /api/v1/network/peers`
 
-- 连接单个服务器地址
-- 批量连接服务器地址
-- 从 URL / 本地路径加载 `server.met`
-- 手动刷新
+展示全局已知对端列表（含所属任务与 `PeerDTO` 详情）。
 
-说明：
-
-- 当前后端文档没有 server 断开、删除、编辑接口
-- 因此前端不要设计对应按钮为必做项
-
-### 9.5.2 DHT 页
+### 9.5.3 DHT 页（IPv4）
 
 数据主要来自：
 
@@ -567,6 +562,21 @@ WebUI 的主要职责：
 说明：
 
 - 当前后端没有 `disable` / `stop dht` 接口
+
+### 9.5.4 DHT v6 页（IPv6 KAD）
+
+数据主要来自：
+
+- `GET /api/v1/network/dht-v6`
+- `POST /api/v1/network/dht-v6/enable`
+- `POST /api/v1/network/dht-v6/load-nodes`
+- `POST /api/v1/network/dht-v6/bootstrap-nodes`
+
+操作与 IPv4 DHT 页类似，节点地址使用 IPv6 格式（如 `[2001:db8::1]:4672`）。
+
+#### 服务器列表字段（补充）
+
+除基础连接字段外，还应展示 `name`、`description`、`aux_port`、UDP/TCP 统计、`obfuscation_tcp_port` 等 daemon 已透出字段。
 
 ---
 
@@ -614,7 +624,9 @@ WebUI 的主要职责：
     "server_addresses": [],
     "server_met_urls": [],
     "nodes_dat_urls": [],
-    "kad_nodes": []
+    "kad_nodes": [],
+    "nodes6_dat_urls": [],
+    "kad_v6_nodes": []
   }
 }
 ```
@@ -625,6 +637,8 @@ WebUI 的主要职责：
 - server_met_urls
 - nodes_dat_urls
 - kad_nodes
+- nodes6_dat_urls
+- kad_v6_nodes
 
 ### 9.6.3 状态持久化
 
@@ -697,6 +711,7 @@ WebUI 的主要职责：
 - Engine 状态
 - 服务器连接数
 - DHT 状态
+- DHT v6 状态（`dht_v6`）
 - 当前总下载速度
 - 当前总上传速度
 
@@ -737,7 +752,7 @@ GET /api/v1/events/ws
 
 - 页面初始化先拉取 HTTP 快照
 - 然后建立 WebSocket 连接
-- `client.status` 用于刷新全局状态
+- `client.status` 用于刷新全局状态（含 `dht_v6`）
 - `transfer.progress` 用于增量更新任务列表与详情
 - 断线自动重连
 - 顶栏展示实时连接状态
@@ -767,6 +782,7 @@ GET /api/v1/events/ws
 ### 网络
 
 - `GET /api/v1/network/servers`
+- `GET /api/v1/network/peers`
 - `POST /api/v1/network/servers/connect`
 - `POST /api/v1/network/servers/connect-batch`
 - `POST /api/v1/network/servers/load-met`
@@ -774,6 +790,10 @@ GET /api/v1/events/ws
 - `POST /api/v1/network/dht/enable`
 - `POST /api/v1/network/dht/load-nodes`
 - `POST /api/v1/network/dht/bootstrap-nodes`
+- `GET /api/v1/network/dht-v6`
+- `POST /api/v1/network/dht-v6/enable`
+- `POST /api/v1/network/dht-v6/load-nodes`
+- `POST /api/v1/network/dht-v6/bootstrap-nodes`
 
 ### 下载任务
 
@@ -782,7 +802,8 @@ GET /api/v1/events/ws
 - `GET /api/v1/transfers/{hash}`
 - `POST /api/v1/transfers/{hash}/pause`
 - `POST /api/v1/transfers/{hash}/resume`
-- `DELETE /api/v1/transfers/{hash}`
+- `POST /api/v1/transfers/{hash}/priority`
+- `DELETE /api/v1/transfers/{hash}`（可选 `delete_files`）
 - `GET /api/v1/transfers/{hash}/peers`
 - `GET /api/v1/transfers/{hash}/pieces`
 
@@ -898,7 +919,6 @@ MVP 必须实现：
 
 - 日志页
 - 统计页
-- 独立 Peers 页
 - 独立 Connections 页
 - SSE
 - 用户名密码登录系统

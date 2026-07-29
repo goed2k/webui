@@ -96,6 +96,10 @@ export function AppLayout() {
             key: ROUTES.networkDht,
             label: <Link to={ROUTES.networkDht}>{t("layout.menu.networkDht")}</Link>,
           },
+          {
+            key: ROUTES.networkDhtV6,
+            label: <Link to={ROUTES.networkDhtV6}>{t("layout.menu.networkDhtV6")}</Link>,
+          },
         ],
       },
       {

@@ -48,6 +48,8 @@ export function connectEventsWs(
         void queryClient.invalidateQueries({ queryKey: queryKeys.info });
         void queryClient.invalidateQueries({ queryKey: queryKeys.servers });
         void queryClient.invalidateQueries({ queryKey: queryKeys.dht });
+        void queryClient.invalidateQueries({ queryKey: queryKeys.dhtV6 });
+        void queryClient.invalidateQueries({ queryKey: queryKeys.networkPeers });
       } else if (env.type === "transfer.progress") {
         const d = env.data as TransferProgressData;
         callbacks?.onTransferProgress?.(d);
@@ -80,6 +82,7 @@ export function connectEventsWs(
               servers: { connected: 1, total: 2 },
               transfers: { count: 1, download_rate: 102400, upload_rate: 51200 },
               dht: { enabled: true, running: true, nodes: 10 },
+              dht_v6: { bootstrapped: true, live_nodes: 5, listen_port: 4672 },
               totals: { download_rate: 102400, upload_rate: 51200 },
             },
           },
