@@ -41,6 +41,8 @@ let mockTransfers: TransferDTO[] = [
     active_peers: 4,
     downloading_pieces: 3,
     progress: 0.48,
+    download_priority: 2,
+    download_priority_label: "P2",
     ed2k_link: `ed2k://|file|示例文件.bin|104857600|${sampleHash}|/`,
   },
 ];
@@ -69,6 +71,8 @@ let mockConfig: SystemConfigDTO = {
     server_met_urls: [],
     nodes_dat_urls: [],
     kad_nodes: [],
+    nodes6_dat_urls: [],
+    kad_v6_nodes: [],
   },
   state: {
     enabled: true,
@@ -95,6 +99,7 @@ const mockServers: ServerDTO[] = [
     disconnecting: false,
     client_id: 12345,
     id_class: "HIGH_ID",
+    aux_port: 4665,
     tcp_flags: 0x08,
     obfuscation_tcp_port: 4661,
     status_users: 100,
@@ -131,6 +136,7 @@ export async function mockRequest<T>(
   init: RequestInit,
 ): Promise<ApiResponse<T>> {
   const method = (init.method || "GET").toUpperCase();
+  const pathOnly = path.split("?")[0] ?? path;
   await Promise.resolve();
 
   if (path === "/system/health" && method === "GET") {
@@ -248,7 +254,25 @@ export async function mockRequest<T>(
     return ok({ ok: true }) as ApiResponse<T>;
   }
 
-  if (path === "/transfers" && method === "GET") {
+  if (path === "/network/dht-v6" && method === "GET") {
+    return ok({
+      bootstrapped: true,
+      live_nodes: 8,
+      listen_port: 4672,
+      storage_point: "mock",
+    }) as ApiResponse<T>;
+  }
+  if (path === "/network/dht-v6/enable" && method === "POST") {
+    return ok({ ok: true }) as ApiResponse<T>;
+  }
+  if (path === "/network/dht-v6/load-nodes" && method === "POST") {
+    return ok({ ok: true }) as ApiResponse<T>;
+  }
+  if (path === "/network/dht-v6/bootstrap-nodes" && method === "POST") {
+    return ok({ ok: true }) as ApiResponse<T>;
+  }
+
+  if (pathOnly === "/transfers" && method === "GET") {
     return ok([...mockTransfers]) as ApiResponse<T>;
   }
 
@@ -284,7 +308,7 @@ export async function mockRequest<T>(
     return ok(t) as ApiResponse<T>;
   }
 
-  const transferDetail = /^\/transfers\/([^/]+)$/.exec(path);
+  const transferDetail = /^\/transfers\/([^/]+)$/.exec(pathOnly);
   if (transferDetail && method === "GET") {
     const hash = transferDetail[1];
     const tr = mockTransfers.find((x) => x.hash.toLowerCase() === hash.toLowerCase());
@@ -293,18 +317,33 @@ export async function mockRequest<T>(
     return ok(detail) as ApiResponse<T>;
   }
 
-  const pauseRe = /^\/transfers\/([^/]+)\/(pause|resume)$/.exec(path);
+  const pauseRe = /^\/transfers\/([^/]+)\/(pause|resume)$/.exec(pathOnly);
   if (pauseRe && method === "POST") {
     return ok({ ok: true }) as ApiResponse<T>;
   }
 
-  const delRe = /^\/transfers\/([^/]+)$/.exec(path);
-  if (delRe && method === "DELETE") {
-    mockTransfers = mockTransfers.filter((x) => x.hash !== delRe[1]);
+  const priorityRe = /^\/transfers\/([^/]+)\/priority$/.exec(pathOnly);
+  if (priorityRe && method === "POST") {
+    const body = JSON.parse((init.body as string) || "{}") as { priority?: number };
+    const p = body.priority;
+    if (p === undefined || p < 0 || p > 4) return err("BAD_REQUEST", i18n.t("mock.invalidPriority"));
+    const hash = priorityRe[1];
+    mockTransfers = mockTransfers.map((tr) =>
+      tr.hash.toLowerCase() === hash.toLowerCase()
+        ? { ...tr, download_priority: p, download_priority_label: `P${p}` }
+        : tr,
+    );
     return ok({ ok: true }) as ApiResponse<T>;
   }
 
-  const peersRe = /^\/transfers\/([^/]+)\/peers$/.exec(path);
+  const delRe = /^\/transfers\/([^/]+)$/.exec(pathOnly);
+  if (delRe && method === "DELETE") {
+    const hash = delRe[1];
+    mockTransfers = mockTransfers.filter((x) => x.hash.toLowerCase() !== hash.toLowerCase());
+    return ok({ ok: true }) as ApiResponse<T>;
+  }
+
+  const peersRe = /^\/transfers\/([^/]+)\/peers$/.exec(pathOnly);
   if (peersRe && method === "GET") {
     return ok([
       {
@@ -330,7 +369,7 @@ export async function mockRequest<T>(
     ]) as ApiResponse<T>;
   }
 
-  const piecesRe = /^\/transfers\/([^/]+)\/pieces$/.exec(path);
+  const piecesRe = /^\/transfers\/([^/]+)\/pieces$/.exec(pathOnly);
   if (piecesRe && method === "GET") {
     return ok([
       { index: 0, state: "COMPLETE", bytes_done: 102400 },
@@ -361,6 +400,7 @@ export async function mockRequest<T>(
           size: 999999,
           sources: 5,
           complete_sources: 2,
+          note: "mock result",
         },
       ],
       updated_at: new Date().toISOString(),

@@ -85,6 +85,12 @@ export function NetworkServersPage() {
     { title: t("pages.networkServers.colClientId"), dataIndex: "client_id", width: 100 },
     { title: t("pages.networkServers.colIdClass"), dataIndex: "id_class", width: 100 },
     {
+      title: t("pages.networkServers.colAuxPort"),
+      dataIndex: "aux_port",
+      width: 88,
+      render: (v: number | undefined) => (v !== undefined && v > 0 ? v : "—"),
+    },
+    {
       title: t("pages.networkServers.colRates"),
       key: "ru",
       width: 120,

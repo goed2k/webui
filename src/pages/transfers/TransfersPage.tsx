@@ -55,6 +55,10 @@ export function TransfersPage() {
     mutationFn: (h: string) => transfersApi.remove(h, false),
     onSuccess: () => void qc.invalidateQueries({ queryKey: ["transfers"] }),
   });
+  const deleteFilesM = useMutation({
+    mutationFn: (h: string) => transfersApi.remove(h, true),
+    onSuccess: () => void qc.invalidateQueries({ queryKey: ["transfers"] }),
+  });
   const priorityM = useMutation({
     mutationFn: ({ hash, priority }: { hash: string; priority: number }) =>
       transfersApi.setPriority(hash, priority),
@@ -83,11 +87,34 @@ export function TransfersPage() {
     (h: string, name: string) => {
       Modal.confirm({
         title: t("pages.transfers.confirmDelete", { name }),
-        okType: "danger",
-        onOk: () => deleteM.mutateAsync(h),
+        content: t("pages.transfers.confirmDeleteHint"),
+        footer: (_, { CancelBtn }) => (
+          <>
+            <CancelBtn />
+            <Button
+              danger
+              onClick={() => {
+                Modal.destroyAll();
+                deleteM.mutate(h);
+              }}
+            >
+              {t("pages.transfers.deleteTaskOnly")}
+            </Button>
+            <Button
+              danger
+              type="primary"
+              onClick={() => {
+                Modal.destroyAll();
+                deleteFilesM.mutate(h);
+              }}
+            >
+              {t("pages.transfers.deleteWithFiles")}
+            </Button>
+          </>
+        ),
       });
     },
-    [t, deleteM],
+    [t, deleteM, deleteFilesM],
   );
 
   const columns: ColumnsType<TransferDTO> = useMemo(
