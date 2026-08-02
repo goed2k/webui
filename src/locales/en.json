@@ -93,6 +93,7 @@
     "transferNotFound": "Transfer not found",
     "searchAlreadyRunning": "A search is already active",
     "invalidPriority": "Invalid priority (must be 0-4)",
+    "missingHttpUrl": "Missing HTTP source URL",
     "notImplemented": "Mock not implemented: {{method}} {{path}}"
   },
   "pages": {
@@ -177,6 +178,8 @@
       "deleteWithFiles": "Task and files",
       "msgCreated": "Transfer created",
       "msgPriorityUpdated": "Download priority updated",
+      "msgHttpSourceAdded": "HTTP download source added",
+      "warnNoHttpUrl": "Enter an HTTP source URL",
       "modalAddTitle": "Add transfer",
       "fieldEd2k": "ED2K link",
       "fieldTargetDir": "Target directory (optional)",
@@ -199,6 +202,9 @@
       "labelBytes": "Done / received / wanted",
       "labelEta": "ETA",
       "labelCreated": "Created",
+      "labelHttpSource": "HTTP download source",
+      "httpSourceAdd": "Add",
+      "httpSourceHint": "Requires daemon enable_web_download",
       "peerColDl": "Download",
       "peerColUl": "Upload",
       "peerColPayloadDl": "Payload DL",
@@ -317,7 +323,13 @@
       "colLastRecv": "Last recv (ms)",
       "msgConnect": "Connect requested",
       "msgBatch": "Batch connect requested",
-      "msgMet": "Load server.met requested"
+      "msgMet": "Load server.met requested",
+      "cardIpfilter": "Load IP filter (ipfilter.dat)",
+      "ipfilterHint": "Each load replaces in-memory rules; you can also set bootstrap ipfilter_paths for startup loading.",
+      "ipfilterLabel": "ipfilter.dat path",
+      "ipfilterSubmit": "Load",
+      "warnNoIpfilter": "Enter an ipfilter.dat path",
+      "msgIpfilter": "IP filter load requested"
     },
     "networkPeers": {
       "hint": "Peers on all active downloads (ED2K clients), from engine state. Requires a running engine.",
@@ -399,7 +411,8 @@
       "phNodes": "https://.../nodes.dat",
       "phKad": "ip:port",
       "phNodes6": "https://.../nodes6.dat",
-      "phKadV6": "[2001:db8::1]:4672"
+      "phKadV6": "[2001:db8::1]:4672",
+      "phIpfilter": "/path/to/ipfilter.dat"
     },
     "settingsState": {
       "title": "State persistence",

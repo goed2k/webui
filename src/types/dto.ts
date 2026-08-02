@@ -184,8 +184,34 @@ export interface SharedFileDTO {
   last_hash_at: number;
 }
 
+/** 引擎配置（GET /system/config 只读；热更新需改配置文件） */
+export interface EngineConfigDTO {
+  listen_port?: number;
+  udp_port?: number;
+  udp_port_v6?: number;
+  enable_dht?: boolean;
+  enable_dht_v6?: boolean;
+  enable_upnp?: boolean;
+  max_download_rate_kb?: number;
+  enable_crypt_layer?: boolean;
+  enable_sec_ident?: boolean;
+  use_emule_temp_layout?: boolean;
+  partial_kad_publish?: boolean;
+  preallocate_disk_space?: boolean;
+  use_sparse_files?: boolean;
+  enable_web_download?: boolean;
+  max_http_sources?: number;
+  max_concurrent_http_blocks?: number;
+  web_cache_dir?: string;
+  http_request_timeout_sec?: number;
+  default_download_dir?: string;
+  [key: string]: unknown;
+}
+
 export interface SystemConfigDTO {
+  config_version?: number;
   auth_token?: string;
+  engine?: EngineConfigDTO;
   bootstrap?: {
     server_addresses: string[];
     server_met_urls: string[];
@@ -193,6 +219,7 @@ export interface SystemConfigDTO {
     kad_nodes: string[];
     nodes6_dat_urls?: string[];
     kad_v6_nodes?: string[];
+    ipfilter_paths?: string[];
   };
   state?: {
     enabled: boolean;

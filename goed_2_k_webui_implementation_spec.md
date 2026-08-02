@@ -319,6 +319,7 @@ WebUI 的主要职责：
 - `POST /api/v1/transfers/{hash}/pause`
 - `POST /api/v1/transfers/{hash}/resume`
 - `POST /api/v1/transfers/{hash}/priority`
+- `POST /api/v1/transfers/{hash}/http-sources`（添加 HTTP 下载源，需 `enable_web_download`）
 - `DELETE /api/v1/transfers/{hash}`（可选 `delete_files`）
 - `GET /api/v1/transfers/{hash}/peers`
 - `GET /api/v1/transfers/{hash}/pieces`
@@ -361,6 +362,7 @@ WebUI 的主要职责：
 - 暂停
 - 恢复
 - 设置优先级（`POST /transfers/{hash}/priority`）
+- 添加 HTTP 下载源（`POST /transfers/{hash}/http-sources`，需 `enable_web_download`）
 - 删除（可选 `delete_files` 同时删本地文件）
 - 查看详情
 
@@ -626,7 +628,8 @@ WebUI 的主要职责：
     "nodes_dat_urls": [],
     "kad_nodes": [],
     "nodes6_dat_urls": [],
-    "kad_v6_nodes": []
+    "kad_v6_nodes": [],
+    "ipfilter_paths": []
   }
 }
 ```
@@ -639,6 +642,7 @@ WebUI 的主要职责：
 - kad_nodes
 - nodes6_dat_urls
 - kad_v6_nodes
+- ipfilter_paths
 
 ### 9.6.3 状态持久化
 
@@ -794,6 +798,7 @@ GET /api/v1/events/ws
 - `POST /api/v1/network/dht-v6/enable`
 - `POST /api/v1/network/dht-v6/load-nodes`
 - `POST /api/v1/network/dht-v6/bootstrap-nodes`
+- `POST /api/v1/network/ipfilter/load`
 
 ### 下载任务
 
@@ -803,6 +808,7 @@ GET /api/v1/events/ws
 - `POST /api/v1/transfers/{hash}/pause`
 - `POST /api/v1/transfers/{hash}/resume`
 - `POST /api/v1/transfers/{hash}/priority`
+- `POST /api/v1/transfers/{hash}/http-sources`（添加 HTTP 下载源，需 `enable_web_download`）
 - `DELETE /api/v1/transfers/{hash}`（可选 `delete_files`）
 - `GET /api/v1/transfers/{hash}/peers`
 - `GET /api/v1/transfers/{hash}/pieces`

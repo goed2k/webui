@@ -93,6 +93,7 @@
     "transferNotFound": "任务不存在",
     "searchAlreadyRunning": "已有活跃搜索",
     "invalidPriority": "优先级无效（需为 0-4）",
+    "missingHttpUrl": "缺少 HTTP 源 URL",
     "notImplemented": "Mock 未实现: {{method}} {{path}}"
   },
   "pages": {
@@ -177,6 +178,8 @@
       "deleteWithFiles": "删除任务和文件",
       "msgCreated": "已创建任务",
       "msgPriorityUpdated": "已更新下载优先级",
+      "msgHttpSourceAdded": "已添加 HTTP 下载源",
+      "warnNoHttpUrl": "请输入 HTTP 源 URL",
       "modalAddTitle": "新增任务",
       "fieldEd2k": "ED2K 链接",
       "fieldTargetDir": "目标目录（可选）",
@@ -199,6 +202,9 @@
       "labelBytes": "完成量 / 接收量 / 目标",
       "labelEta": "ETA",
       "labelCreated": "创建时间",
+      "labelHttpSource": "HTTP 下载源",
+      "httpSourceAdd": "添加",
+      "httpSourceHint": "需 daemon 启用 enable_web_download",
       "peerColDl": "下载",
       "peerColUl": "上传",
       "peerColPayloadDl": "有效下载",
@@ -317,7 +323,13 @@
       "colLastRecv": "距上次接收(ms)",
       "msgConnect": "已请求连接",
       "msgBatch": "已请求批量连接",
-      "msgMet": "已请求加载 server.met"
+      "msgMet": "已请求加载 server.met",
+      "cardIpfilter": "加载 IP 过滤规则（ipfilter.dat）",
+      "ipfilterHint": "每次加载会替换当前内存中的过滤规则；也可在引导配置 ipfilter_paths 中预置启动时加载路径。",
+      "ipfilterLabel": "ipfilter.dat 路径",
+      "ipfilterSubmit": "加载",
+      "warnNoIpfilter": "请输入 ipfilter.dat 路径",
+      "msgIpfilter": "已请求加载 IP 过滤规则"
     },
     "networkPeers": {
       "hint": "列出当前所有下载任务上已连接/曾出现的对端（ED2K 客户端），数据来自引擎状态；引擎未启动时无法加载。",
@@ -399,7 +411,8 @@
       "phNodes": "https://.../nodes.dat",
       "phKad": "ip:port",
       "phNodes6": "https://.../nodes6.dat",
-      "phKadV6": "[2001:db8::1]:4672"
+      "phKadV6": "[2001:db8::1]:4672",
+      "phIpfilter": "/path/to/ipfilter.dat"
     },
     "settingsState": {
       "title": "状态持久化（state）",

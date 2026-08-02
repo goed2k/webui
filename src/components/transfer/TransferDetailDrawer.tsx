@@ -2,10 +2,10 @@ import { transfersApi } from "@/services/api/transfers";
 import { queryKeys } from "@/constants/queryKeys";
 import { formatBytes, formatEta, formatPercent, formatSpeed, formatTimestamp } from "@/utils/format";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Descriptions, Drawer, Select, Space, Table, Tabs, Typography, message } from "antd";
+import { Descriptions, Drawer, Input, Select, Space, Table, Tabs, Typography, message, Button } from "antd";
 import type { ColumnsType } from "antd/es/table";
 import type { PeerDTO, PieceDTO } from "@/types/dto";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useTranslation } from "react-i18next";
 
 import { TRANSFER_PRIORITY_OPTIONS } from "@/constants/transferPriority";
@@ -52,6 +52,15 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
       if (hash) void qc.invalidateQueries({ queryKey: queryKeys.transfer(hash) });
     },
   });
+
+  const httpSourceM = useMutation({
+    mutationFn: (url: string) => transfersApi.addHttpSource(hash!, url),
+    onSuccess: () => {
+      message.success(t("pages.transfers.msgHttpSourceAdded"));
+    },
+  });
+
+  const [httpUrl, setHttpUrl] = useState("");
 
   const peerCols: ColumnsType<PeerDTO> = useMemo(
     () => [
@@ -221,6 +230,37 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
                   </Descriptions.Item>
                   <Descriptions.Item label={t("pages.transfers.colEta")}>{formatEta(d.eta)}</Descriptions.Item>
                   <Descriptions.Item label={t("pages.transfers.labelCreated")}>{formatTimestamp(d.create_time)}</Descriptions.Item>
+                  <Descriptions.Item label={t("pages.transfers.labelHttpSource")}>
+                    <Space.Compact style={{ width: "100%" }}>
+                      <Input
+                        size="small"
+                        placeholder="https://example.com/file.bin"
+                        value={httpUrl}
+                        onChange={(e) => setHttpUrl(e.target.value)}
+                        disabled={httpSourceM.isPending}
+                      />
+                      <Button
+                        size="small"
+                        type="primary"
+                        loading={httpSourceM.isPending}
+                        onClick={() => {
+                          const url = httpUrl.trim();
+                          if (!url) {
+                            message.warning(t("pages.transfers.warnNoHttpUrl"));
+                            return;
+                          }
+                          httpSourceM.mutate(url, {
+                            onSuccess: () => setHttpUrl(""),
+                          });
+                        }}
+                      >
+                        {t("pages.transfers.httpSourceAdd")}
+                      </Button>
+                    </Space.Compact>
+                    <Typography.Text type="secondary" style={{ fontSize: 12 }}>
+                      {t("pages.transfers.httpSourceHint")}
+                    </Typography.Text>
+                  </Descriptions.Item>
                 </Descriptions>
               ),
             },
