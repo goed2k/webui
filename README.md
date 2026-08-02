@@ -40,6 +40,18 @@ pnpm build
 pnpm preview
 ```
 
+## 发布
+
+推送符合 `v*` 格式的 Git 标签后，GitHub Actions 会自动执行构建，并创建 Release、上传 `dist` 打包附件（`goed2k-webui-<版本>.tar.gz`）。
+
+```bash
+# 示例：发布 v0.1.0
+git tag v0.1.0
+git push origin v0.1.0
+```
+
+可在仓库的 **Actions** 与 **Releases** 页面查看构建进度与下载产物。本地发布前建议先执行 `pnpm build` 确认构建通过。
+
 ## 规范与接口
 
 产品行为见仓库内 `goed_2_k_webui_implementation_spec.md`；字段与路径以 daemon 的 `docs/API.md` 为准。
