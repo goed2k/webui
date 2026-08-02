@@ -19,6 +19,7 @@ export function SettingsBootstrapPage() {
     kad_nodes: string[];
     nodes6_dat_urls: string[];
     kad_v6_nodes: string[];
+    ipfilter_paths: string[];
   }>();
 
   const update = useMutation({
@@ -44,6 +45,7 @@ export function SettingsBootstrapPage() {
           kad_nodes: boot?.kad_nodes ?? [],
           nodes6_dat_urls: boot?.nodes6_dat_urls ?? [],
           kad_v6_nodes: boot?.kad_v6_nodes ?? [],
+          ipfilter_paths: boot?.ipfilter_paths ?? [],
         }}
         onFinish={(v) =>
           update.mutate({
@@ -54,6 +56,7 @@ export function SettingsBootstrapPage() {
               kad_nodes: v.kad_nodes ?? [],
               nodes6_dat_urls: v.nodes6_dat_urls ?? [],
               kad_v6_nodes: v.kad_v6_nodes ?? [],
+              ipfilter_paths: v.ipfilter_paths ?? [],
             },
           })
         }
@@ -75,6 +78,13 @@ export function SettingsBootstrapPage() {
         </Form.Item>
         <Form.Item name="kad_v6_nodes" label="kad_v6_nodes">
           <Select mode="tags" placeholder={t("pages.settingsBootstrap.phKadV6")} tokenSeparators={[",", " "]} />
+        </Form.Item>
+        <Form.Item name="ipfilter_paths" label="ipfilter_paths">
+          <Select
+            mode="tags"
+            placeholder={t("pages.settingsBootstrap.phIpfilter")}
+            tokenSeparators={[",", " "]}
+          />
         </Form.Item>
         <Space>
           <Button type="primary" htmlType="submit" loading={update.isPending}>

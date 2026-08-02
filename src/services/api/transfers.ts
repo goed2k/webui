@@ -32,6 +32,8 @@ export const transfersApi = {
   resume: (hash: string) => apiPost<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}/resume`),
   setPriority: (hash: string, priority: number) =>
     apiPost<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}/priority`, { priority }),
+  addHttpSource: (hash: string, url: string) =>
+    apiPost<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}/http-sources`, { url }),
   remove: (hash: string, deleteFiles?: boolean) => {
     const q = deleteFiles ? "?delete_files=true" : "";
     return apiDelete<{ ok: boolean }>(`/transfers/${encodeURIComponent(hash)}${q}`);

@@ -38,9 +38,17 @@ export function NetworkServersPage() {
     },
   });
 
+  const loadIpfilter = useMutation({
+    mutationFn: (path: string) => networkApi.loadIpfilter(path),
+    onSuccess: () => {
+      message.success(t("pages.networkServers.msgIpfilter"));
+    },
+  });
+
   const [singleForm] = Form.useForm<{ address: string }>();
   const [batchForm] = Form.useForm<{ text: string }>();
   const [metForm] = Form.useForm<{ sources: string }>();
+  const [ipfilterForm] = Form.useForm<{ path: string }>();
 
   const columns = [
     { title: t("pages.networkServers.colIdentifier"), dataIndex: "identifier", ellipsis: true, width: 120 },
@@ -221,6 +229,31 @@ export function NetworkServersPage() {
           </Form.Item>
           <Button type="primary" htmlType="submit" loading={loadMet.isPending}>
             {t("pages.networkServers.metSubmit")}
+          </Button>
+        </Form>
+      </Card>
+
+      <Card size="small" title={t("pages.networkServers.cardIpfilter")}>
+        <Typography.Paragraph type="secondary" style={{ marginBottom: 12 }}>
+          {t("pages.networkServers.ipfilterHint")}
+        </Typography.Paragraph>
+        <Form
+          form={ipfilterForm}
+          layout="vertical"
+          onFinish={(v) => {
+            const path = v.path?.trim();
+            if (!path) {
+              message.warning(t("pages.networkServers.warnNoIpfilter"));
+              return;
+            }
+            loadIpfilter.mutate(path);
+          }}
+        >
+          <Form.Item name="path" label={t("pages.networkServers.ipfilterLabel")} rules={[{ required: true }]}>
+            <Input placeholder="/path/to/ipfilter.dat" />
+          </Form.Item>
+          <Button type="primary" htmlType="submit" loading={loadIpfilter.isPending}>
+            {t("pages.networkServers.ipfilterSubmit")}
           </Button>
         </Form>
       </Card>

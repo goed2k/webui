@@ -21,4 +21,6 @@ export const networkApi = {
     apiPost<{ ok: boolean }>("/network/dht-v6/load-nodes", { sources }),
   dhtV6Bootstrap: (nodes: string[]) =>
     apiPost<{ ok: boolean }>("/network/dht-v6/bootstrap-nodes", { nodes }),
+  loadIpfilter: (path: string) =>
+    apiPost<{ ok: boolean }>("/network/ipfilter/load", { path }),
 };

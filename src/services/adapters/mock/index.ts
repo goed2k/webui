@@ -73,6 +73,7 @@ let mockConfig: SystemConfigDTO = {
     kad_nodes: [],
     nodes6_dat_urls: [],
     kad_v6_nodes: [],
+    ipfilter_paths: [],
   },
   state: {
     enabled: true,
@@ -216,6 +217,9 @@ export async function mockRequest<T>(
   if (path === "/network/servers/load-met" && method === "POST") {
     return ok({ ok: true }) as ApiResponse<T>;
   }
+  if (path === "/network/ipfilter/load" && method === "POST") {
+    return ok({ ok: true }) as ApiResponse<T>;
+  }
 
   if (path === "/network/peers" && method === "GET") {
     return ok([
@@ -333,6 +337,13 @@ export async function mockRequest<T>(
         ? { ...tr, download_priority: p, download_priority_label: `P${p}` }
         : tr,
     );
+    return ok({ ok: true }) as ApiResponse<T>;
+  }
+
+  const httpSourceRe = /^\/transfers\/([^/]+)\/http-sources$/.exec(pathOnly);
+  if (httpSourceRe && method === "POST") {
+    const body = JSON.parse((init.body as string) || "{}") as { url?: string };
+    if (!body.url?.trim()) return err("BAD_REQUEST", i18n.t("mock.missingHttpUrl"));
     return ok({ ok: true }) as ApiResponse<T>;
   }
 
