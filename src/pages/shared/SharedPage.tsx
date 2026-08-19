@@ -255,7 +255,7 @@ export function SharedPage() {
           formDir.resetFields();
         }}
         onOk={() => formDir.submit()}
-        destroyOnClose
+        destroyOnHidden
       >
         <Form
           form={formDir}
@@ -276,7 +276,7 @@ export function SharedPage() {
         open={importModal}
         onCancel={() => setImportModal(false)}
         onOk={() => formImport.submit()}
-        destroyOnClose
+        destroyOnHidden
       >
         <Form form={formImport} layout="vertical" onFinish={(v) => importFile.mutate(v.path)}>
           <Form.Item name="path" label={t("pages.shared.labelFilePath")} rules={[{ required: true }]}>

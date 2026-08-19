@@ -14,7 +14,7 @@ import {
   ShareAltOutlined,
 } from "@ant-design/icons";
 import { Breadcrumb, Button, Layout, Menu, theme, Typography } from "antd";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 import { getToken } from "@/services/api/client";
 import { Link, Outlet, useLocation } from "react-router-dom";
 import { useTranslation } from "react-i18next";
@@ -25,16 +25,11 @@ export function AppLayout() {
   const { t } = useTranslation();
   const location = useLocation();
   const [collapsed, setCollapsed] = useState(false);
-  const [tokenOpen, setTokenOpen] = useState(false);
+  const [tokenOpen, setTokenOpen] = useState(() => {
+    if (import.meta.env.VITE_USE_MOCK === "true") return false;
+    return !getToken() && !sessionStorage.getItem("goed2k_dismiss_token_hint");
+  });
   const { token } = useAuth();
-
-  useEffect(() => {
-    const mock = import.meta.env.VITE_USE_MOCK === "true";
-    if (mock) return;
-    if (!getToken() && !sessionStorage.getItem("goed2k_dismiss_token_hint")) {
-      setTokenOpen(true);
-    }
-  }, []);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
@@ -50,9 +45,11 @@ export function AppLayout() {
   }, [location.pathname]);
 
   const [openKeys, setOpenKeys] = useState<string[]>(openKeysDefault);
-  useEffect(() => {
+  const [menuPath, setMenuPath] = useState(location.pathname);
+  if (location.pathname !== menuPath) {
+    setMenuPath(location.pathname);
     setOpenKeys(openKeysDefault);
-  }, [openKeysDefault]);
+  }
 
   const titleKey = PAGE_TITLE_KEYS[location.pathname];
   const title = titleKey ? t(titleKey) : t("app.name");

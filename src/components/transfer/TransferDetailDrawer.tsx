@@ -179,7 +179,7 @@ export function TransferDetailDrawer({ hash, open, onClose }: TransferDetailDraw
       width={720}
       open={open}
       onClose={onClose}
-      destroyOnClose
+      destroyOnHidden
     >
       {detailQuery.isLoading ? (
         <Typography.Text type="secondary">{t("common.loading")}</Typography.Text>

@@ -2,7 +2,7 @@
   "name": "goed2k-webui",
   "private": true,
   "version": "0.1.0",
-  "packageManager": "pnpm@10.6.5",
+  "packageManager": "pnpm@11.22.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,30 +11,30 @@
     "lint": "eslint ."
   },
   "dependencies": {
-    "@ant-design/icons": "^5.6.1",
-    "@tanstack/react-query": "^5.67.0",
-    "antd": "^5.24.0",
-    "dayjs": "^1.11.13",
-    "i18next": "^26.0.4",
+    "@ant-design/icons": "^6.3.2",
+    "@tanstack/react-query": "^5.101.4",
+    "antd": "^6.6.1",
+    "dayjs": "^1.11.23",
+    "i18next": "^26.3.6",
     "i18next-browser-languagedetector": "^8.2.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
-    "react-i18next": "^17.0.2",
-    "react-router-dom": "^7.4.0",
-    "zustand": "^5.0.3"
+    "react": "^19.2.8",
+    "react-dom": "^19.2.8",
+    "react-i18next": "^17.0.11",
+    "react-router-dom": "^7.18.2",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
-    "@eslint/js": "^9.21.0",
-    "@types/node": "^22.13.0",
-    "@types/react": "^19.0.10",
-    "@types/react-dom": "^19.0.4",
-    "@vitejs/plugin-react": "^4.3.4",
-    "eslint": "^9.21.0",
-    "eslint-plugin-react-hooks": "^5.1.0",
-    "eslint-plugin-react-refresh": "^0.4.19",
-    "globals": "^15.15.0",
-    "typescript": "~5.7.2",
-    "typescript-eslint": "^8.24.1",
-    "vite": "^6.2.0"
+    "@eslint/js": "^10.0.1",
+    "@types/node": "^24.12.0",
+    "@types/react": "^19.2.18",
+    "@types/react-dom": "^19.2.4",
+    "@vitejs/plugin-react": "^6.0.5",
+    "eslint": "^10.8.1",
+    "eslint-plugin-react-hooks": "^7.1.1",
+    "eslint-plugin-react-refresh": "^0.5.4",
+    "globals": "^17.11.0",
+    "typescript": "~6.0.3",
+    "typescript-eslint": "^8.67.0",
+    "vite": "^8.2.1"
   }
 }

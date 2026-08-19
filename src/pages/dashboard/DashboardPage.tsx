@@ -76,6 +76,13 @@ export function DashboardPage() {
 
   const connectedCount = (servers.data ?? []).filter((s) => s.connected).length;
   const recent = (transfers.data ?? []).slice(0, 8);
+  const lastUpdatedAt = Math.max(
+    health.dataUpdatedAt,
+    info.dataUpdatedAt,
+    servers.dataUpdatedAt,
+    dht.dataUpdatedAt,
+    transfers.dataUpdatedAt,
+  );
 
   return (
     <Space direction="vertical" size="large" style={{ width: "100%" }}>
@@ -217,7 +224,7 @@ export function DashboardPage() {
         <br />
         <Typography.Text type="secondary">
           {t("pages.dashboard.lastUpdated")}
-          {formatTimestamp(Math.floor(Date.now() / 1000))}
+          {formatTimestamp(Math.floor(lastUpdatedAt / 1000))}
         </Typography.Text>
       </Card>
     </Space>

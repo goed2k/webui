@@ -1,6 +1,6 @@
 import { useAuth } from "@/app/providers/AuthProvider";
 import { Modal, Input, Space, Typography } from "antd";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useTranslation } from "react-i18next";
 
 interface TokenModalProps {
@@ -14,10 +14,11 @@ export function TokenModal({ open, onClose, allowSkip = true }: TokenModalProps)
   const { t } = useTranslation();
   const { token, setToken } = useAuth();
   const [value, setValue] = useState(token ?? "");
-
-  useEffect(() => {
+  const [wasOpen, setWasOpen] = useState(open);
+  if (open !== wasOpen) {
+    setWasOpen(open);
     if (open) setValue(token ?? "");
-  }, [open, token]);
+  }
 
   const handleOk = () => {
     const tok = value.trim();
@@ -35,6 +36,7 @@ export function TokenModal({ open, onClose, allowSkip = true }: TokenModalProps)
       cancelText={allowSkip ? t("token.later") : undefined}
       maskClosable={allowSkip}
       closable={allowSkip}
+      destroyOnHidden
     >
       <Space direction="vertical" style={{ width: "100%" }} size="middle">
         <Typography.Text type="secondary">{t("token.hint")}</Typography.Text>
